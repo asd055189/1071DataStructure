@@ -60,7 +60,7 @@ deque< T >& deque< T >::operator=( const deque< T > &x )
    {
 	  
 	   if (x.mySize == 0) {
-		  	mySize = 0;	  			     //    ｜｜
+		   mySize = 0;	  			     //    ｜｜
 		   myOff = 0;	  			 	 //    ｜｜
 		   mapSize = 0;	  				 //    ｜｜   
 		   map = nullptr;				 //    ＼／
@@ -102,62 +102,58 @@ deque< T >& deque< T >::operator=( const deque< T > &x )
 		   int row2 = x.myOff / 4;
 		   for (int i = 0; i < x.mapSize; i++)
 			   tmp[i] = new T[4];
-			   if (mapSize != 0) {										//modified
-		   for (int j = row1, i = row1, k = 0; k < mapSize / 2; k++) {  //modified
-			   if (map[i] != nullptr) {
-				   if (j == mapSize)
-					   j %= mapSize;
-				 if (i == (mapSize) / 2)								//add
-					i %= (mapSize) / 2;
-				   tmp[j] = map[i];
-				   j++;
-				   i++;													//add
-				   tmpsize++;
-			   }
-			   else 													//add
-			   	j++;
-		   }
-		}
-			   while (tmpsize != 0) {
-				   if (row2 >= x.mapSize)
+			if (mapSize != 0) {									        	//modified
+			   for (int j = row1, i = row1, k = 0; k < mapSize / 2; k++) {  //modified
+				   if (map[i] != nullptr) {
+					   if (j == mapSize)
+						   j %= mapSize;
+					   if (i == (mapSize) / 2)								//add
+						   i %= (mapSize) / 2;
+					   tmp[j] = map[i];
+					   j++;
+					   i++;													//add
+					   tmpsize++;
+				    }
+				   else 													//add
+				     	j++;
+			    }
+			}
+			while (tmpsize != 0) {
+				 if (row2 >= x.mapSize)
 					   row2 %= x.mapSize;
-				   if (row1 >= x.mapSize)
-					   row1 %= x.mapSize;
-					if (x.map[row2] != nullptr)							//add
-				   for (int FQ = 0; FQ < 4; FQ++)
-					   tmp[row1][FQ] = x.map[row2][FQ];
-				   row1++;
-				   row2++;
-				   tmpsize--;
-			   }
-			   while (!(row2 % (x.mapSize) == (x.myOff + x.mySize) % (x.mapSize * 4) / 4))
-			   {
-				   if (row1 >= x.mapSize )								//modified
-					   row1 %= x.mapSize;								//modified
-					 if (row2 >= x.mapSize)								//add
-					   row2%= x.mapSize;								//add
-				   if (tmp[row1] == nullptr)
-					   tmp[row1] = new T[4];
-				   for (int FQ = 0; FQ < 4; FQ++)
-					   tmp[row1][FQ] = x.map[row2][FQ];
-				   row1++;
-				   row2++;
-				}
-				map = new T*[x.mapSize];								//add
-			   for (int i=0;i<x.mapSize;i++){
-			   		map[i] = new T[4];									//add
-			   
-																		//for (int FQ = 0; FQ < 4; FQ++)//delete
-					   if(map[i]!=nullptr)
-					   map[i]= tmp[i];									//modified
-				}if (mapSize == 0)									//    ｜｜	
-				   myOff = 36;										//    ｜｜
-				mySize = x.mySize;									//	  ＼／	
-			   mapSize = x.mapSize;										/*add*/	
-	   }
-
-
-
+				 if (row1 >= x.mapSize)
+					  row1 %= x.mapSize;
+				 if (x.map[row2] != nullptr)							//add
+				for (int FQ = 0; FQ < 4; FQ++)
+					 tmp[row1][FQ] = x.map[row2][FQ];
+				row1++;
+				row2++;
+				tmpsize--;
+			}
+		    while (!(row2 % (x.mapSize) == (x.myOff + x.mySize) % (x.mapSize * 4) / 4)){
+			     if (row1 >= x.mapSize )								//modified
+				     row1 %= x.mapSize;								//modified
+				 if (row2 >= x.mapSize)								//add
+				     row2%= x.mapSize;								//add
+			     if (tmp[row1] == nullptr)
+				     tmp[row1] = new T[4];
+			     for (int FQ = 0; FQ < 4; FQ++)
+				     tmp[row1][FQ] = x.map[row2][FQ];
+			     row1++;
+			     row2++;
+			}
+			map = new T*[x.mapSize];								//add
+		    for (int i=0;i<x.mapSize;i++){
+		   		map[i] = new T[4];									//add
+		 															//for (int FQ = 0; FQ < 4; FQ++)//delete
+				if(map[i]!=nullptr)
+				   map[i]= tmp[i];									//modified
+			}
+			if (mapSize == 0)									//    ｜｜	
+			   myOff = 36;										//    ｜｜
+			mySize = x.mySize;									//	  ＼／	
+		    mapSize = x.mapSize;										/*add*/	
+	  	}
    } // end outer if
    return *this; // enables x = y = z, for example
 } // end function operator=
